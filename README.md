@@ -73,10 +73,11 @@ conn(), connection() | Returns the PDO handler.
 query(**statement**, **bind**, **loop**) | All of these functions you won't need to use the bind variable, but we recommend that you do. if you do - will prepare and execute the statement given, will then loop the callback function you give it.
 static_query(**statement**, **bind**) | Prepares and executes the query, mainly used for *INSERT* queries, will also return the PDO Query Object.
 query_set(**statement**, **bind**) | Returns the first row gathered from the query.
-row_count(**statement, **bind**), rc() | Returns the row count of the query.
+row_count(**statement**, **bind**), rc() | Returns the row count of the query.
 glid(), last_id() | Gets the last ID inserted from the PDO object.
 update(**table**,**updates**,**where**,**binds**) | Takes tables as column => data, goes into table and finds the where statement, and executes using binds.
 getall(**table**, **columns**) | Gets each entry of the column in the table, example users and username, will get each username from the table users.
 plus(**table**, **col**, **id**, **by**) |  Go into the **table**, find the column **col** with id **id** and increase by **by**.
 post(**value**, **do**) | Checks the **value**, if it's something like *sub = login*, will check if the post value *sub* = *login*, if so do the callback **do** or if the value is something like *sub*, will just check if it's set and perform the **do** callback function if so.
 insert(**table**, **inserts**) | Will insert into **table**, using the array **inserts** in a structure like `column => data`, will auto-bind for you.
+if\_entry\_exists(**array**) | Array will contain a sub-array called *info* - This contains `table = table`, `where = binding_where_statement`, `binds = array containing your binds`. Then the array will contain two other pieces, called `true` and `false`, containing the output of `if_entry_exists`, itll look like: ![Array Example](http://image.prntscr.com/image/806149cd7b1b42c2919a34e592937375.png)
