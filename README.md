@@ -30,7 +30,7 @@ To make a simple PSM object just do the following code, and we can inspect it af
 $psm = new PSM('localhost test root EM');
 ```
 
-Each paramater is seperated by a space, and the input string really looks like 
+Each paramater is seperated by a space, and the input string really looks like
 
 **HOST - DATABASE - USERNAME - PASSWORD**
 
@@ -67,26 +67,16 @@ Each function will usually have a "safe function" pair, if a function uses ONLY 
 
 I'm working on making functions where you don't even have to write the SQL query anymore, but with time that will come :innocent:
 
-Function | Information
--------- | -----------
-**Functions** | **That will be removed at some point-in-time, but for now are stable and work**
-c(), connection() | Returns the PDO handler.
-sQuery(**statement**, **binding**, **loop function**) | Will take the **statement** and prepare it, then execute it with the given **binding** then loop the function **callback** - the callback function is given 3 variables, **$row, $psm and a $\_POST object** for the loop.
-query() | *Deprecated*
-statQuery(**statement**) | Performs the query statically, meaning a simple $database->query(**statement**)
-sstatQuery(**statement**, **binds**) | Prepares the query given, will the execute with **binds**.
-retQuery(**statement**) | Returns a pure PDO query.
-sretQuery(**statement**, **binds**) | Returns a binded PDO query.
-gqs(**statement**) | **gqs = GET QUERY SET**, returns the first row of the query, example **$psm->gqs("SELECT * FROM users");** - will return the first row in that query, so **id = 1**
-gsqs(**statement**, **binds**) | Does the same as **gqs** but will instead bind the query before getting the first row.
-grc(**statement**) | Gets the row count of the query - The amount of rows.
-gsrc(**statement**, **binds**) | Does the same as **grc** but will instead bind the query before getting the row count.
-glid() | Get's the equivalent of *$pdo->lastInsertId()* - Will get the last ID that was inserted.
-**Functions** | **Functions that are currently not fully-wanted in the main code-base of functions we recommend, but are awesome soon-to-be features**
-upadate(**table**, **updates**, **where = false**, **binds = false**, **debug = false**) | The **update** function is meant to generate the **UPDATE TABLE SET x = y** queries for you and execute it using binding if you want. **table** is the table in your MySQL database that you want to have the changes occur in, **where** is a **WHERE x = y** statement, if you're planning on using a binding array, go ahead and make it something like **x = :y** in the **where** attribute, if you aren't, just append in the ', like **x = \\'y\\'**, **binds** is your binding array, **debug** will echo out the statement that was created if wanted.
-getall(**table**, **column**) | This will go into the **table** given and return an array of each entry with the **column**, so, if you say **table** = users, and **column** = username, this will return an array of all the usernames in the table, good for making *that email is already in use* if that's what your app needs :smile:
-select, col, where, order, print_query, build | This isn't fully recommended as of now as it needs some polishing up, but this is a set of functions that let you create a query, that can example go in a foreach loop and work correctly, *example* - $psm->select('users')->col('\')->where('id = :id',true)->build('bind', [':id' => 1]) - And if you wrapped that in a foreach loop, that would work.
-plus(**table**, **col**, **id**, **by**) | This is a function that will go into **table**, and increase the **column** at id **id** by **by**, simple increasing statement.
-post(**value**, **do**) | This is a neat function! And I will always have a spot in my :heart: for it, but this function will take a look at the **value**, if it's a single word, it'll check if that POST request exists, if the **value** is something like *sub = login*, itll check if *$_POST['sub'] == 'login'* - and if so, the function will do the given **do** function supplied (**do** is given 3 paramaters - **psm**, **post object** and **post array**.
-insert($array) | This is one of the most recently updated functions, meaning its *awesome*, just supply an array, this will be your example array: `['table' => 'users', 'username' => 'jack']` - This function will automatically bind your query so its safe and insert it for you, easy!
-pHelp(**query**) | This function acts as a *debugger* - And will display *not return* an array that contains a bunch of debugging information.
+PSM Function | Documentation
+------------ | -------------
+conn(), connection() | Returns the PDO handler.
+query(**statement**, **bind**, **loop**) | All of these functions you won't need to use the bind variable, but we recommend that you do. if you do - will prepare and execute the statement given, will then loop the callback function you give it.
+static_query(**statement**, **bind**) | Prepares and executes the query, mainly used for *INSERT* queries, will also return the PDO Query Object.
+query_set(**statement**, **bind**) | Returns the first row gathered from the query.
+row_count(**statement, **bind**), rc() | Returns the row count of the query.
+glid(), last_id() | Gets the last ID inserted from the PDO object.
+update(**table**,**updates**,**where**,**binds**) | Takes tables as column => data, goes into table and finds the where statement, and executes using binds.
+getall(**table**, **columns**) | Gets each entry of the column in the table, example users and username, will get each username from the table users.
+plus(**table**, **col**, **id**, **by**) |  Go into the **table**, find the column **col** with id **id** and increase by **by**.
+post(**value**, **do**) | Checks the **value**, if it's something like *sub = login*, will check if the post value *sub* = *login*, if so do the callback **do** or if the value is something like *sub*, will just check if it's set and perform the **do** callback function if so.
+insert(**table**, **inserts**) | Will insert into **table**, using the array **inserts** in a structure like `column => data`, will auto-bind for you.
