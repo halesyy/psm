@@ -81,3 +81,5 @@ plus(**table**, **col**, **id**, **by**) |  Go into the **table**, find the colu
 post(**value**, **do**) | Checks the **value**, if it's something like *sub = login*, will check if the post value *sub* = *login*, if so do the callback **do** or if the value is something like *sub*, will just check if it's set and perform the **do** callback function if so.
 insert(**table**, **inserts**) | Will insert into **table**, using the array **inserts** in a structure like `column => data`, will auto-bind for you.
 if\_entry\_exists(**array**) | Array will contain a sub-array called *info* - This contains `table = table`, `where = binding_where_statement`, `binds = array containing your binds`. Then the array will contain two other pieces, called `true` and `false`, containing the output of `if_entry_exists`, itll look like: ![Array Example](http://image.prntscr.com/image/806149cd7b1b42c2919a34e592937375.png)
+table_exists(**table**) | Returns true or false if the **table** exists in your selected database
+get_cols(**table**) | Returns an array containing the columns of a table
