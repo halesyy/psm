@@ -170,31 +170,6 @@
     /*
       FUNCTIONS MEANT TO NOT TAKE IN RAW "STATEMENTS", AND INSTEAD TAKE SOME DATA AND MAKE IT.
     */
-
-      /* A function to make the "update" query easier and not need to worry about binding, etc.. */
-        public function oldupdate($table, $updates, $where = false, $binds = false, $debug = false) {
-          # Getting the database handler.
-            $db = $this->handler;
-          # Begining to construct the query.
-            $statement = "UPDATE $table SET ";
-          # Breaking up the arrays from key and value into parts.
-            $adds = array();
-              foreach ($updates as $col => $set) {
-                if ($binds === false) array_push($adds,"$col = \"$set\"");
-                  else array_push($adds,"$col = $set");
-              }
-            $statement .= implode(', ',$adds);
-          # Management for where area.
-            if ($where !== false) $statement .= " WHERE $where";
-          # Query has been made, preparing + executing the array or building query base.
-            if ($binds !== false) { # Building the query if they're using binds and prepared statements.
-              $query = $db->prepare($statement);
-              $query->execute($binds);
-            } else { # Executing the query if the user isn't using prepared statements. (no binds)
-              $db->query($statement);
-            }
-            if ($debug) echo "<b>STATEMENT_TRACE: </b> $statement";
-        }
       /* The new update function - Will generate your update query and auto-bind it for you.
       The where part of the statement also generates a bind for you - just do "id = 1" and itll bind.  */
         public function update($table, $updates, $where = false, $debug = false) {
@@ -218,6 +193,14 @@
           if ($debug) { echo $statement; $this->display($vals); }
         }
 
+      /* Deletes all the ids that are given to it in the table given. */
+        public function delete($table, $ids) {
+          # Loops the given id - Deleting every id given.
+            foreach ($ids as $id) {
+              $query = $this->handler->prepare("DELETE FROM $table WHERE id = ?");
+              $query->execute([$id]);
+            }
+        }
       /* Returns each column entry from the table asked, so if input = Table:users, col:username - An array is returned with each username. */
         public function getall($table, $col) {
           $query = $this->handler->query("SELECT $col FROM $table");
