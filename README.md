@@ -108,10 +108,10 @@ It'tt then get the query data back and insert them into the public variables acc
 This is the same as using the **query** function and asking for it to return an object, but instead, you can make functions inside of the class, for instance:
 
 ```php
-  # Function inside of User class.
-  public function get_profile_link() {
-    return "<a href='/profile/{$this->i}'>{$this->username}</a>";
-  }
+# Function inside of User class.
+public function get_profile_link() {
+  return "<a href='/profile/{$this->i}'>{$this->username}</a>";
+}
 ```
 
 Then call it with **$set->get_profile_link()** and bam, you get the profile link returned!
