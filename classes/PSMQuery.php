@@ -195,8 +195,27 @@
             }
             if ($debug) echo "<b>STATEMENT_TRACE: </b> $statement";
         }
-        public function update() {
-
+      /* The new update function - Will generate your update query and auto-bind it for you.
+      The where part of the statement also generates a bind for you - just do "id = 1" and itll bind.  */
+        public function update($table, $updates, $where = false, $debug = false) {
+          # Starting the query.
+            $statement = "UPDATE $table SET ";
+          # Setting the cols / vals.
+            $cols = array_keys($updates);
+            $vals = array_values($updates);
+          # Adds " = ?" too each of the cols values.
+          foreach ($cols as $index => $col) { $cols[$index] = "$col = ?"; }
+            $statement .= implode(', ', $cols);
+          if ($where) {
+            # Gets each side of the where statement given.
+            $where_parts = explode(' = ',$where);
+            $statement .= " WHERE {$where_parts[0]} = ?";
+            array_push($vals, $where_parts[1]);
+          }
+          # Performing the query.
+            $query = $this->handler->prepare($statement);
+            $query->execute($vals);
+          if ($debug) { echo $statement; $this->display($vals); }
         }
 
       /* Returns each column entry from the table asked, so if input = Table:users, col:username - An array is returned with each username. */
@@ -207,7 +226,7 @@
               array_push($store, $row[$col]);
             }
           return $store;
-        }
+        } public function ga($table, $col) { $this->getall($table, $col); }
 
       /* Will go into the table and find the column, and find the ID of given ID, and increase it by how it wants. */
         public function plus($table, $col, $id, $by) {
