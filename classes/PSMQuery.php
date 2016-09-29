@@ -1,16 +1,21 @@
 <?php
   class PSMQuery extends PSMExtra {
     /*
+      * @category  PHP Database Management
+      * @package   PSM - PHP Scripting Module
+      * @author    Jack Hales <halesyy@gmail.com, jek@intuor.net>
+      * @copyright 2001 - 2016 Jack Hales
+      * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
+      * @version   GIT: <174549a75a080a24279ffcb2608b5cf27b4adf8a>
+      * @link      http://jekoder.com, http://intuor.net - Not used often.
+
       Hello! And welcome to the PSM Query-based class.
       This class contains all of the query-based functions meant to replicate the PDO queries,
       So this is a bunch of functions you will soon become used to using!
-
       NOTE::
         Most of this used to be code that was commented, because of preference I have reverted to miniman amounts of comments,
         just cause it looks unprofessional, so, here's some basic terminologiy.
-
         $this->handler = The raw PDO object.
-
         If the function contains a:
           if ($binding) {
 
@@ -22,12 +27,21 @@
       ::
     */
 
+    # Returns an associative array.
+    const assoc = PDO::FETCH_ASSOC;
+    # Returns an object.
+    const obj   = PDO::FETCH_OBJ;
+    # Returns the object as it's accessed.
+    const lazy  = PDO::FETCH_LAZY;
+    # Returns column => data
+    const named = PDO::FETCH_NAMED;
+    # Returns both an associative array and an numerative array.
+    const both  = PDO::FETCH_BOTH;
+    # Returns a class.
+    const clas  = PDO::FETCH_CLASS;
 
-
-
-
-
-
+    # Setting the const version if needed for some absurd reason.
+    const version = "f*** off dont use the static methods for my variables MATE wanna FKN RAZZLE DAZZLE";
 
 
 
@@ -44,7 +58,7 @@
         } public function t() { return $this->test(); }
 
       /* This is a function making a simple query and looping the given function. */
-        public function query($statement, callable $loop, $binding = false) {
+        public function query($statement, callable $loop, $binding = false, $fetch_type = PSM::assoc) {
           # THIS -> PDO HANDLER -> MAKE_QUERY_WITH -> $STATEMENT.
             if ($binding) { # There are binding variables, use!
               $query = $this->handler->prepare($statement);
@@ -52,17 +66,16 @@
             } else { # No binding variables.
               $query = $this->handler->query($statement);
             }
+          # Management for the if there's a wanted fetch-type.
+            if ($fetch_type !== false) {
+              $query->setFetchMode($fetch_type);
+            }
           # Will feed the loop the PSM Variable, a $_POST object and a $_SESSION object.
             foreach ($query as $row) {
-              $loop($this, (object) $_POST, (object) $_SESSION);
+              $loop($row, $this, (object) $_POST, (object) $_SESSION);
             }
           return $query;
         }
-
-
-
-
-
 
 
 
@@ -106,6 +119,21 @@
           } public function qrc($statement, $binding = false) { $this->row_count($statement, $binding); }
           # End of sub-functions for row_count.
 
+        /* Takes in a class-name and creates class, will then perform the query given from class variables and return the class with the results from the query. */
+          public function class_query($class_name) {
+              $class = new $class_name();
+            // Getting the statment + binds from the class.
+              $statement = $class->statementinfo['statement'];
+              $binds     = $class->statementinfo['binds'];
+            // Making query.
+              $query = $this->handler->prepare($statement);
+              $query->execute($binds);
+              $query->setFetchMode(PDO::FETCH_CLASS, $class_name);
+              $return = $query->fetch();
+
+            if (!$return) die('psm - <b>class_query</b> was called - no rows returned [returned <i>false</i>]');
+              else return $return;
+          }
 
 
 
@@ -124,7 +152,9 @@
 
     /*
       OBJECT-RELATED FUNCTIONS, OBJECT-FUNCTIONS AND PSM-RELATED FUNCTIONS.
+      AS WELL AS SOME CHECK FUNCTIONS.
         Functions that act on the handler directly.
+        Functions that don't execute acting-queries (SELECT, DELETE, UPDATE)
     */
 
       /* Will get the PDO Handler connection. */
@@ -153,6 +183,20 @@
           }
           $arr['psm version'] = $this->version;
             $this->display($arr);
+        }
+      /* Will return all of the columns of the a table. */
+        public function get_cols($table) {
+          $query = $this->handler->query("SELECT * FROM $table");
+          # Gets the keys for the query - The cols.
+          $cols_and_vals = array_keys($query->fetch(PDO::FETCH_ASSOC));
+          # Returns the columns.
+          return $cols_and_vals;
+        }
+      /* Returns if the table exists. */
+        public function table_exists($table) {
+          $query = $this->handler->query("SHOW TABLES LIKE '$table'");
+          if ($this->query_row_count($query)) return true;
+            else return false;
         }
 
 
@@ -300,7 +344,6 @@
               if ($rows) call_user_func($array['true'], $this, (object) $_POST, (object) $_SESSION);
                 else call_user_func($array['false'], $this, (object) $_POST, (object) $_SESSION);
           }
-
 
 
 
