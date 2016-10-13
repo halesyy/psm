@@ -1,5 +1,5 @@
 <?php
-  class PSMQuery extends PSMExtra {
+  class PSMQuery extends PSMPacket {
     /*
       * @category  PHP Database Management
       * @package   PSM - PHP Scripting Module
@@ -43,9 +43,45 @@
     # Setting the const version if needed for some absurd reason.
     const version = "f*** off dont use the static methods for my variables MATE wanna FKN RAZZLE DAZZLE";
 
-
-
-
+    /*
+      This method is called when the user is calling a method that doesn't exist.
+      Meaning the user is most likely using old PSM code and migrating their PSM version,
+      or just using a re-write.
+    */
+    public function __call($function, $arguments) {
+      # Lowers string.
+        $function = strtolower($function);
+      # The replaces.
+        $replaces = [
+          'gsqs'   => 'query_set',
+          'gsrc'   => 'row_count',
+          'qgrc'   => 'query_row_count',
+          'grc'    => 'row_count',
+          'gqs'    => 'query_set',
+          'squery' => 'query',
+          'change' => 'update'
+        ];
+      # Replaces old with new.
+        $replaced = false;
+        $old_function_name = $function;
+        foreach ($replaces as $old => $new) {
+          $function = str_replace($old, $new, $function);
+          # Checks if the old function name was changed from the change.
+          if ($function != $old_function_name) $replaced = true;
+        }
+      # Management for return.
+        if ($replaced) {
+          $amm = count($arguments);
+          # Management - calling the function.
+          if ($amm == 1) return $this->$function($arguments[0]);
+            else if ($amm == 2) return $this->$function($arguments[0],$arguments[1]);
+            else if ($amm == 3) return $this->$function($arguments[0],$arguments[1],$arguments[2]);
+            else if ($amm == 4) return $this->$function($arguments[0],$arguments[1],$arguments[2],$arguments[3]);
+            else return $this->$function($arguments[0],$arguments[1],$arguments[2],$arguments[3],$arguments[4]);
+        } else {
+          echo "the function <b>$function</b> was called - now known";
+        }
+    }
 
 
 

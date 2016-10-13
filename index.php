@@ -1,14 +1,14 @@
 <?php
-  # Using session_start() cause PSM will sometimes supply the $_SESSION variable to you :D
-  session_start();
-    require('classes/PSMExtra.php');
-    require('classes/PSMQuery.php');
-    require('classes/PSMMain.php');
-
+  # We use session_start for all our code cause sometimes PSM is required to load session data.
+    session_start();
+  # Class requiring.
+    require "classes/PSMExtra.php";
+    require "classes/PSMPacket.php";
+    require "classes/PSMQuery.php";
+    require "classes/PSMMain.php";
+  # Make the PSM variable.
     $psm = new PSM('localhost test root EM',[
       'safeconnection' => true
     ]);
-
-    $psm->query("SELECT * FROM users WHERE id = :id", function($row, $psm, $p, $s){
-      echo "my name is {$row->username}";
-    }, [':id' => 3], PSM::lazy);
+  # Done.
+    echo $psm->SocketSpam(PSM::UDP, 'intuor.net', false, 2);
