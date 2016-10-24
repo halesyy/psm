@@ -269,6 +269,16 @@
               ':id' => $id
             ]);
         }
+    
+    
+    
+          
+          
+          
+          
+          
+          
+          '''''''''''''''''''''''''''''''''''''''''''''''''''
 
         # The vars we need for the following functions.
           private $currentquery = false;
@@ -615,9 +625,35 @@
         /* JEKS TESTING AREA! :D */
           # There's currently nothing here! Looks like Jek's doing something else. :]
 
+        
+    
+    
+           public function dbgen($dbname = )
 
 
+<?php
+public $selecteddb = false;
 
+public function dbgen($dbname = 'test') {
+	$this->handler->query("CREATE $dbname;");
+}
+public function seldb($dbname = 'test') {
+	$this->selecteddb = $dbname;
+}
+public function ntable($tabldefs = []) {
+	$tablename = $tabledefs['table'];
+	$autoinc   = $tabledefs['ai'];
+	
+	if ($autoinc) # Wants the table to have an id + auto_incrament.
+		else # Does not want an auto_incrament table. (id)
+	
+	$texts     = $tabledefs['texts'];
+	$ints      = $tabledefs['ints'];
+	#varcharmanip
+	if ($tabledefs['varchars']) {
+		foreach ($tabledefs[''])
+	}
+}
 
 
 
