@@ -69,20 +69,20 @@ Drivers are something I've never spent a lot of time using/creating, but would b
 | version | Displays the version of the current PSM instance instantiated. |
 | qa / help | Query analysis - Will take in a prepared statement and analyze error messages, and report back. |
 | cquery | First param is the statement, second param is the binder to the query. Binder is optional if you want a base query. |
-| cstatement | Array-to-statement generator, example input ```php ['select' => 'users', 'where' => 'id = 1']; ``` will create a statement judging from the array inputs. |
-| short_csatement | Array-to-statement generator but smaller array, example input ```php ['users','username','id = 1']; ``` will create **SELECT username FROM users WHERE id = 1**. |
+| cstatement | Array-to-statement generator, example input ```['select' => 'users', 'where' => 'id = 1']; ``` will create a statement judging from the array inputs. |
+| short_csatement | Array-to-statement generator but smaller array, example input ```['users','username','id = 1']; ``` will create **SELECT username FROM users WHERE id = 1**. |
 | stat | Does a simple static function, prepares and binds the query, i.e. an **INSERT** statement is static. |
 | set | Takes in a statement and optional binding to create a query and return the first row in an ASSOCIATIVE array. |
 | rows | Returns the row count of the statement and binds supplied to create the query. |
 | hasdata | Shorthand rows function but will check if there's any rows, if so return **true** / **false**. |
 | hasnodata | Opposite of hasdata. |
-| hasdata_specific | Takes in table, column, what the column has to equal to, and callers, looks in table column for specific data, if so will return true or false, if the 4th paramater is supplied, will call a 'true' or 'false' array callback. ```php ['true' => FUNCTION, 'false' => FUNCTION] ``` |
+| hasdata_specific | Takes in table, column, what the column has to equal to, and callers, looks in table column for specific data, if so will return true or false, if the 4th paramater is supplied, will call a 'true' or 'false' array callback. ```['true' => FUNCTION, 'false' => FUNCTION] ``` |
 | query_rows | Rows function but if you have created a query. |
 | info | If you set the first paramater to true, displays all functions in PSM as well as some other inforamtion about the class, if set to false will just show number of functions. |
 | get_cols | Takes in a table as it's first paramater, will return the column names of the table. |
 | table_exists | Returns bool of true or false if the table is existant in the current database. |
 | update | Shorthand **UPDATE** statement function, takes in a table as the first paramater and an array as the second, the array needs to contain columns as keys and data as rows, then the third paramater must be a where statement built as a clause following the form of **COLUMN = DATA**, and no other exceptions - Fourth paramater is debug, set to true if you wanna see the statement / binds auto-generated from the function. |
-| delete | Takes in first paramater as the table name, if nothing else is given will simply delete the entire table - Second paramater is the column you want to look in, and the selectors as the third paramater, meaning you can run: ```php $psm->delete('users', 'id' [1,2,3]);``` Which will simply delete users with ID's of 1, 2 or 3. |
+| delete | Takes in first paramater as the table name, if nothing else is given will simply delete the entire table - Second paramater is the column you want to look in, and the selectors as the third paramater, meaning you can run: ```$psm->delete('users', 'id' [1,2,3]);``` Which will simply delete users with ID's of 1, 2 or 3. |
 | get_column_data | Looks in a table then the column, then returns a numerative array of all the data in that row, i.e. Get all usernames from the table users. |
 | data | Takes in statement and bind as both paramaters, and returns array containing the actual query itself, rowcount, queryset/set, statement and the binds of the query. |
 | insert | Runs similar to the update function where it performs an insert on the table given in the first paramater, then uses the array keys as columns and values as data, third paramater is debug. |
