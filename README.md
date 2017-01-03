@@ -106,7 +106,7 @@ $psm->version();
 But that's a bit... edgy... So use this way!
 ```php
 $psm->close();
-$_SESSION['psm'];
+$_SESSION['psm'] = $psm;
 // do some stuff over pages
 . . .
 // oo! we need psm again!
