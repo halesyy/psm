@@ -89,6 +89,29 @@ Drivers are something I've never spent a lot of time using/creating, but would b
 | capsule | Run to store your current database inforamtion in a string, use to migrate or **capsule your connection for later-use**.
 | decapsule | Uses data generated from **capsule** to re-create a connection. |
 
+### More on capsules (and serializing the PSM variable)
+#### Seems pretty useless to take a string and put it on another server to act as the serve, right?
+Well, this wasn't the main aim for building the capsule function, the aim was to be able to store that capsule data to later re-construct the connection, but even now there's an easier way to do that, so I'll show you both ways. (please don't store stuff like database connectors in session, just don't, this is just an example)
 
-
+```php
+$_SESSION['psm'] = $psm->capsule();
+$psm = false;
+// do some stuff over pages
+. . .
+// oo! we need psm again!
+$psm = new PSM;
+$psm->decapsule($_SESSION['psm']);
+$psm->version();
+```
+But that's a bit... edgy... So use this way!
+```php
+$psm->close();
+$_SESSION['psm'];
+// do some stuff over pages
+. . .
+// oo! we need psm again!
+$psm = $_SESSION['psm']->open();
+$psm->version();
+```
+That way you're storing your entire class in the variable, even safer!
 
