@@ -115,3 +115,16 @@ $psm->version();
 ```
 That way you're storing your entire class in the variable, even safer!
 
+### Chains
+#### PSM has a nice semi-function-set for chaining, allowing you to create statements that're easily readable quite quickly.
+This is the PSM chaining functions at it's first integration, more to come!
+
+```php
+// SELECT username FROM users WHERE id < ? ORDER BY id DESC LIMIT 2
+// (v = DESC, ^ = ASC)
+$psm->select(['users','username'])->where('id < 5')->order('v', 'id')->limit(2)->run(function($row){
+  print_r($row);
+});
+```
+
+After the statement is constructed, the rows are looped in the callback function given in **run**, easy!
