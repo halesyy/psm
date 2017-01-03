@@ -10,4 +10,4 @@
       'safeconnection' => true
     ]);
   # Done.
-    echo $psm->SocketSpam(PSM::UDP, 'officialhda.weebly.com', false, 5, true);
+    echo $psm->SocketSpam(PSM::UDP, 'example.com', false, 5, true);
