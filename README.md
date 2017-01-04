@@ -51,8 +51,7 @@ When making a new PSM object, you are given a lot of functions :smirk:
 
 > **If you don't really know any PHP OOP, I recommend you understand how classes work and functions work together, you can read up on it [here - php manual](http://php.net/manual/en/language.oop5.php) or [here - youtube tutorial](https://www.youtube.com/watch?v=ipp4WPDwwvk&list=PLfdtiltiRHWF0RicJb20da8nECQ1jFvla)**
 
-To make a simple PSM object just do the following code, and we can inspect it after:
-**(Make sure to require the PSM files as done in the install section)**
+Create a simple PSM object as we showed you how before, then we can continue!
 
 ### How to add a driver
 ```php
