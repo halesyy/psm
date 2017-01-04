@@ -81,3 +81,37 @@ plus(**table**, **col**, **id**, **by**) |  Go into the **table**, find the colu
 post(**value**, **do**) | Checks the **value**, if it's something like *sub = login*, will check if the post value *sub* = *login*, if so do the callback **do** or if the value is something like *sub*, will just check if it's set and perform the **do** callback function if so.
 insert(**table**, **inserts**) | Will insert into **table**, using the array **inserts** in a structure like `column => data`, will auto-bind for you.
 if\_entry\_exists(**array**) | Array will contain a sub-array called *info* - This contains `table = table`, `where = binding_where_statement`, `binds = array containing your binds`. Then the array will contain two other pieces, called `true` and `false`, containing the output of `if_entry_exists`, itll look like: ![Array Example](http://image.prntscr.com/image/806149cd7b1b42c2919a34e592937375.png)
+table_exists(**table**) | Returns true or false if the **table** exists in your selected database
+get_cols(**table**) | Returns an array containing the columns of a table
+
+## class_query(*classname*)
+
+This is a bit of a confusing function, so it's best to just give an example then explain after:
+
+```php
+# The class we want to full (fill the public variables)
+class User {
+  public $statementinfo = [
+    'statement' => "SELECT * FROM users WHERE id = :id",
+    'binds'     => [':id' => 1]
+  ];
+  
+  public $id, $username, $password, $lastlogin;
+}
+
+$set = $psm->class_query('User');
+echo $set->username;
+```
+
+This function will go into the class **classname**, and retrieve the public variables **statementinfo->statement** and **statementinfo->binds**, and as you can guess, perform the query given.
+It'tt then get the query data back and insert them into the public variables according to the columns.
+This is the same as using the **query** function and asking for it to return an object, but instead, you can make functions inside of the class, for instance:
+
+```php
+# Function inside of User class.
+public function get_profile_link() {
+  return "<a href='/profile/{$this->i}'>{$this->username}</a>";
+}
+```
+
+Then call it with **$set->get_profile_link()** and bam, you get the profile link returned!
