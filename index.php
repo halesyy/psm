@@ -3,7 +3,6 @@
     session_start();
   # Class requiring.
     require "classes/PSMExtra.php";
-    require "classes/PSMPacket.php";
     require "classes/PSMQuery.php";
     require "classes/PSMMain.php";
   # Make the PSM variable.
@@ -11,4 +10,4 @@
       'safeconnection' => true
     ]);
   # Done.
-    echo $psm->SocketSpam(PSM::UDP, 'intuor.net', false, 2);
+    echo $psm->SocketSpam(PSM::UDP, 'officialhda.weebly.com', false, 5, true);
