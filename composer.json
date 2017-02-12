@@ -1,0 +1,20 @@
+{
+    "name": "jek/psm",
+    "type": "library",
+    "description": "A small yet powerful extra layer of abstraction to native database connections",
+    "require": {
+      "php": "^5.3.3 || ^7.0",
+      "another-vendor/package": "1.*",
+    },
+    "keywords": ["database","pdo","php"],
+    "homepage": "https://github.com/halesyy/psm",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jack Hales",
+            "email": "halesyy@gmail.com",
+            "homepage": "http://intuor.net",
+            "role": "Developer"
+        }
+    ]
+}

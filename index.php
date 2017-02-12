@@ -9,5 +9,3 @@
     $psm = new PSM('localhost test root EM',[
       'safeconnection' => true
     ]);
-  # Done.
-    echo $psm->SocketSpam(PSM::UDP, 'officialhda.weebly.com', false, 5, true);
