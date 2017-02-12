@@ -3,8 +3,7 @@
     "type": "library",
     "description": "A small yet powerful extra layer of abstraction to native database connections",
     "require": {
-      "php": "^5.3.3 || ^7.0",
-      "another-vendor/package": "1.*",
+      "php": "^5.3.3 || ^7.0"
     },
     "keywords": ["database","pdo","php"],
     "homepage": "https://github.com/halesyy/psm",
